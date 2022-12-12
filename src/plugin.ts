@@ -80,7 +80,9 @@ export const TroisJSVuePlugin = {
 
       'AudioListener',
       'PositionalAudio',
-      'StaticAudio'
+      'StaticAudio',
+
+      'TransformControls',
     ]
 
     comps.forEach(comp => {

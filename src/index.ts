@@ -6,6 +6,7 @@ export * from './meshes/index'
 export * from './models/index'
 export * from './effects/index'
 export * from './audio/index'
+export * from './editing/index'
 
 // export * from './components/index'
 
