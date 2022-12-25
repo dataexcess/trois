@@ -14,6 +14,7 @@
     "declaration": true,
     "declarationMap": true,
     "outDir": "types",
+    "types": []
   },
   "include": ["src/**/*.ts", "src/**/*.vue"],
   // "include": ["src/export.ts"],

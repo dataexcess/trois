@@ -1,12 +1,11 @@
 module.exports = {
-  root: true,
+//   root: true,
   env: {
     browser: true,
     es2020: true,
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
     '@vue/standard',
     '@vue/typescript/recommended',
     'standard',
@@ -49,7 +48,7 @@ module.exports = {
     // }],
     // 'vue/valid-template-root': 'off',
     'vue/no-multiple-template-root': 'off',
-
+    'vue/multi-word-component-names': 'off',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': ['off'],
   },
