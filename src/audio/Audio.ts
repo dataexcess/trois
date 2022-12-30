@@ -83,5 +83,8 @@ export default defineComponent({
         }
     }
   },
+  beforeUnmount() {
+    this.stop()
+  },
   __hmrId: 'Audio',
 })
