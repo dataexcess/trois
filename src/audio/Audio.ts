@@ -51,6 +51,7 @@ export default defineComponent({
         audioLoader.load(this.src!, function( buffer ) {
             console.log('loaded audio from memory')
             instance.audio?.setBuffer( buffer );
+            instance.audio?.setLoop(true)
             instance.play()
         });
     },
