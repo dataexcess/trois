@@ -31,6 +31,7 @@ export const TroisJSVuePlugin = {
       'StandardMaterial',
       'SubSurfaceMaterial',
       'ToonMaterial',
+      'LineBasicMaterial',
 
       'Texture',
       'CubeTexture',
@@ -56,11 +57,14 @@ export const TroisJSVuePlugin = {
       'Torus', 'TorusGeometry',
       'TorusKnot', 'TorusKnotGeometry',
       'Tube', 'TubeGeometry',
+      'Capsule', 'CapsuleGeometry',
 
       'Image',
       'InstancedMesh',
       'Points',
       'Sprite',
+      'TextSprite',
+      'Lines',
 
       'FbxModel',
       'GltfModel',
