@@ -7,7 +7,7 @@ export default defineComponent({
   emits: ['before-load', 'load', 'progress', 'error'],
   props: {
     src: { type: String, required: true },
-    texture: { type: String, required: false },
+    textureSrc: { type: String, required: false },
   },
   data() {
     return {

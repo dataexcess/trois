@@ -1,29 +1,47 @@
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { TextureLoader, Mesh, MeshBasicMaterial } from 'three'
-
+import { TextureLoader, Mesh, MeshBasicMaterial, Texture, DoubleSide } from 'three'
+import { MaterialInterface } from '../materials/Material'
 import Model from './Model'
 
+export interface ObjModelInterface {
+    material?: MaterialInterface
+    mesh?:Mesh
+  }
+
 export default defineComponent({
-  extends: Model,
-  created() {
-    const loader = new OBJLoader()
-    this.$emit('before-load', loader)
-    loader.load(this.src, (root) => {
-      const model = root.children[0]
+    extends: Model,
+    setup(): ObjModelInterface {
+        return {
+        }
+    },
+    methods: {
+        setTexture() {
+            if (this.textureSrc && this.mesh) {
+                const txtLoader = new TextureLoader();
+                const texture =  txtLoader.load( this.textureSrc )
+                const material = new MeshBasicMaterial( { map: texture } );  
+                // object.layers.mask = 2
+                material.side = DoubleSide
 
-      if ((model as Mesh).isMesh) {
-        if (this.texture) {
-            const txtLoader = new TextureLoader();
-            const texture =  txtLoader.load( this.texture )
-            const material = new MeshBasicMaterial( { map: texture } );  
-            // object.layers.mask = 2
-            (model as Mesh).material = material
-          }
-      }
+                this.mesh.material = material
+            }
+        },
+    },
+    created() {
+        const loader = new OBJLoader()
+        this.$emit('before-load', loader)
+        loader.load(this.src, (root) => {
+            const model = root.children[0]
+            if ((model as Mesh).isMesh) {
+                this.mesh = model as Mesh
+                this.setTexture()
+            }
 
-      this.onLoad(model)
-      this.initObject3D(model)
-    }, this.onProgress, this.onError)
-  },
+            this.onLoad(model)
+            this.initObject3D(model)
+        }, this.onProgress, this.onError)
+
+        watch(() => this.textureSrc, this.setTexture)
+    },
 })
