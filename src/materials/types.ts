@@ -112,6 +112,12 @@ export interface PointsMaterialPropsInterface extends MaterialPropsInterface, Al
   sizeAttenuation?: boolean
 }
 
+export interface LineBasicMaterialPropsInterface extends MaterialPropsInterface {
+    linewidth?: number
+    linecap?: string
+    linejoin?: string
+}
+
 export interface StandardMaterialPropsInterface extends
   MaterialPropsInterface,
   AlphaPropsInterface,

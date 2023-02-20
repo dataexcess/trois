@@ -24,5 +24,6 @@ export { default as Sprite } from './Sprite'
 export { default as TextSprite } from './TextSprite'
 
 export { default as Points } from './Points'
+export { default as Lines } from './Lines'
 
 export type { MeshPublicInterface } from './Mesh'

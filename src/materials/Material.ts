@@ -1,8 +1,8 @@
 import { ComponentPropsOptions, ComponentPublicInstance, defineComponent, InjectionKey, PropType, watch } from 'vue'
-import { Color, Material, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshToonMaterial, PointsMaterial as TPointsMaterial, Texture, ShadowMaterial as TShadowMaterial } from 'three'
+import { Color, Material, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshToonMaterial, LineBasicMaterial as TLineBasicMaterial, PointsMaterial as TPointsMaterial, Texture, ShadowMaterial as TShadowMaterial } from 'three'
 import { MeshInjectionKey, MeshInterface } from '../meshes/Mesh'
 import { bindObjectProp, propsValues } from '../tools'
-import { BasicMaterialPropsInterface, LambertMaterialPropsInterface, MaterialPropsInterface, PhongMaterialPropsInterface, PhysicalMaterialPropsInterface, PointsMaterialPropsInterface, StandardMaterialPropsInterface, ToonMaterialPropsInterface } from './types'
+import { BasicMaterialPropsInterface, LambertMaterialPropsInterface, LineBasicMaterialPropsInterface, MaterialPropsInterface, PhongMaterialPropsInterface, PhysicalMaterialPropsInterface, PointsMaterialPropsInterface, StandardMaterialPropsInterface, ToonMaterialPropsInterface } from './types'
 
 export interface MaterialSetupInterface {
   mesh?: MeshInterface
@@ -102,3 +102,5 @@ export const PointsMaterial = materialComponent('PointsMaterial', { props: { typ
 export const ShadowMaterial = materialComponent('ShadowMaterial', { color: { type: String, default: '#000000' }, props: { type: Object as PropType<MaterialPropsInterface>, default: () => ({}) } }, (opts) => new TShadowMaterial(opts))
 export const StandardMaterial = materialComponent('StandardMaterial', { props: { type: Object as PropType<StandardMaterialPropsInterface>, default: () => ({}) } }, (opts) => new MeshStandardMaterial(opts))
 export const ToonMaterial = materialComponent('ToonMaterial', { props: { type: Object as PropType<ToonMaterialPropsInterface>, default: () => ({}) } }, (opts) => new MeshToonMaterial(opts))
+export const LineBasicMaterial = materialComponent('LineBasicMaterial', { props: { type: Object as PropType<LineBasicMaterialPropsInterface>, default: () => ({}) } }, (opts) => new TLineBasicMaterial(opts))
+
