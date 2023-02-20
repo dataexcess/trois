@@ -29,6 +29,8 @@ export default defineComponent({
     renderer.camera = camera
 
     bindProp(props, 'position', camera)
+    bindProp(props, 'mask', camera.layers)
+
     bindObjectProp(props, 'props', camera, true, cameraSetProp);
 
     ['left', 'right', 'top', 'bottom', 'near', 'far', 'zoom'].forEach(p => {

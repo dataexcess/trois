@@ -14,6 +14,7 @@ export default defineComponent({
 
   props: {
     props: { type: Object, default: () => ({}) },
+    mask: { type: Number, default: 0, required: false}
   },
 
   // inject: { renderer: RendererInjectionKey as symbol },

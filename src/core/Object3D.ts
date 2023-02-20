@@ -69,6 +69,7 @@ export default defineComponent({
     props: { type: Object, default: () => ({}) },
     disableAdd: { type: Boolean, default: false },
     disableRemove: { type: Boolean, default: false },
+    mask: { type: Number, default: 0, required: false},
     ...pointerProps,
   },
   setup(): Object3DSetupInterface {
@@ -109,6 +110,7 @@ export default defineComponent({
       bindProp(this, 'scale', o3d)
       bindProp(this, 'userData', o3d.userData)
       bindProp(this, 'visible', o3d)
+      bindProp(this, 'mask', o3d.layers)
 
       bindObjectProp(this, 'props', o3d)
 
