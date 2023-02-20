@@ -21,6 +21,7 @@ export { default as Tube } from './Tube'
 export { default as Image } from './Image'
 export { default as InstancedMesh } from './InstancedMesh'
 export { default as Sprite } from './Sprite'
+export { default as TextSprite } from './TextSprite'
 
 export { default as Points } from './Points'
 
