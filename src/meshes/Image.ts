@@ -1,4 +1,4 @@
-import { defineComponent, watch } from 'vue'
+import { defineComponent, watch, PropType } from 'vue'
 import { DoubleSide, MeshBasicMaterial, PlaneGeometry, Texture, TextureLoader } from 'three'
 import Mesh, { MeshSetupInterface } from './Mesh'
 
@@ -12,6 +12,7 @@ export default defineComponent({
   extends: Mesh,
   props: {
     src: { type: String, required: true },
+    canvas: { type: HTMLCanvasElement as PropType<HTMLCanvasElement | null>, default: null, required: false },
     width: Number,
     height: Number,
     widthSegments: { type: Number, default: 1 },
@@ -28,6 +29,7 @@ export default defineComponent({
     this.material = new MeshBasicMaterial({ side: DoubleSide, map: this.loadTexture() })
 
     watch(() => this.src, this.refreshTexture);
+    watch(() => this.canvas, this.refreshTexture);
 
     ['width', 'height'].forEach(p => {
       // @ts-ignore
@@ -42,7 +44,13 @@ export default defineComponent({
   },
   methods: {
     loadTexture() {
-      return new TextureLoader().load(this.src, this.onLoaded)
+        if (this.canvas) {
+            const texture = new Texture(this.canvas); 
+            texture.needsUpdate = true
+            return texture
+        } else {
+            return new TextureLoader().load(this.src, this.onLoaded)
+        }
     },
     refreshTexture() {
       this.texture?.dispose()

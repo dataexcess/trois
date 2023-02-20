@@ -16,6 +16,7 @@ export default defineComponent({
     name: { type: String, default: 'map' },
     uniform: String,
     src: String,
+    canvas: { type: HTMLCanvasElement as PropType<HTMLCanvasElement | null>, default: null, required: false },
     onLoad: Function as PropType<(t: Texture) => void>,
     onProgress: Function as PropType<(e: ProgressEvent) => void>,
     onError: Function as PropType<(e: ErrorEvent) => void>,
@@ -27,6 +28,7 @@ export default defineComponent({
   created() {
     this.refreshTexture()
     watch(() => this.src, this.refreshTexture)
+    watch(() => this.canvas, this.refreshTexture)
   },
   unmounted() {
     this.material?.setTexture(null, this.name)
@@ -34,8 +36,15 @@ export default defineComponent({
   },
   methods: {
     createTexture() {
-      if (!this.src) return undefined
-      return new TextureLoader().load(this.src, this.onLoaded, this.onProgress, this.onError)
+        if (this.canvas) {
+            const texture = new Texture(this.canvas); 
+            texture.needsUpdate = true
+            return texture!
+        } else if (!this.src) {
+            return undefined
+        } else {
+            return new TextureLoader().load(this.src!, this.onLoaded, this.onProgress, this.onError)
+        }
     },
     initTexture() {
       if (!this.texture) return
