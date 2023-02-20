@@ -7,11 +7,12 @@ export const SceneInjectionKey: InjectionKey<Scene> = Symbol('Scene')
 export default defineComponent({
   name: 'Scene',
   props: {
+    scene: { type: Scene, required: false },
     background: [String, Number, Object],
   },
   setup(props) {
     const renderer = inject(RendererInjectionKey)
-    const scene = new Scene()
+    const scene = props.scene ?? new Scene()
 
     if (!renderer) {
       console.error('Renderer not found')
