@@ -17,6 +17,7 @@ export default defineComponent({
     far: { type: Number, default: 2000 },
     zoom: { type: Number, default: 1 },
     position: { type: Object as PropType<Vector3PropInterface>, default: () => ({ x: 0, y: 0, z: 0 }) },
+    rotation: { type: Object as PropType<Vector3PropInterface>, default: () => ({ x: 0, y: 0, z: 0 }) },
   },
   setup(props) {
     const renderer = inject(RendererInjectionKey)
@@ -28,6 +29,7 @@ export default defineComponent({
     const camera = new OrthographicCamera(props.left, props.right, props.top, props.bottom, props.near, props.far)
     renderer.camera = camera
 
+    bindProp(props, 'rotation', camera)
     bindProp(props, 'position', camera)
     bindProp(props, 'mask', camera.layers)
 
