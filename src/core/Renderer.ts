@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import { Camera, Scene, WebGLRenderer, WebGLRendererParameters, AudioListener } from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { ComponentPublicInstance, defineComponent, InjectionKey, PropType, watchEffect } from 'vue'
+import { toRef, watch, ComponentPublicInstance, defineComponent, InjectionKey, PropType, watchEffect } from 'vue'
 import { bindObjectProp } from '../tools'
 import { PointerInterface, PointerPublicConfigInterface } from './usePointer'
 import useThree, { SizeInterface, ThreeConfigInterface, ThreeInterface } from './useThree'
@@ -221,6 +221,23 @@ export default defineComponent({
       } else {
         requestAnimationFrame(this.renderLoop)
       }
+
+      if (typeof this.$props.orbitCtrl !== 'boolean' && this.$props.orbitCtrl !== null && this.$props.orbitCtrl !== undefined) {
+        
+        console.log('subscribing to orbitControls watcher')
+
+        const orbitCtrlsRef = toRef(this.$props, 'orbitCtrl')
+
+        watch(orbitCtrlsRef, (value) => { 
+            console.log('inside orbitctls watcher....')
+            Object.entries(this.$props.orbitCtrl).forEach(([key, value]) => {
+                console.log('orbit controls _ changing value: ' + value + ' for key: ' + key)
+                // @ts-ignore
+                this.three.cameraCtrl[key] = value
+            })
+        }, { deep: true })
+      }
+
     }
 
     this.mountedCallbacks.forEach(e => e({ type: 'mounted', renderer: this }))
