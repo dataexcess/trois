@@ -26,6 +26,8 @@ export default defineComponent({
         return
     }
     this.renderer.audioListener = this.audioListener
+
+    console.log('created audio listener')
   },
   __hmrId: 'AudioListener',
 })
