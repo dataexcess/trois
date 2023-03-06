@@ -1,6 +1,6 @@
 import { defineComponent, watch } from 'vue'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { TextureLoader, Mesh, MeshBasicMaterial, Texture, DoubleSide } from 'three'
+import { TextureLoader, Mesh, MeshLambertMaterial, Texture, DoubleSide } from 'three'
 import { MaterialInterface } from '../materials/Material'
 import Model from './Model'
 
@@ -20,7 +20,7 @@ export default defineComponent({
             if (this.textureSrc && this.mesh) {
                 const txtLoader = new TextureLoader();
                 const texture =  txtLoader.load( this.textureSrc )
-                const material = new MeshBasicMaterial( { map: texture } );  
+                const material = new MeshLambertMaterial( { map: texture } );  
                 // object.layers.mask = 2
                 material.side = DoubleSide
 
