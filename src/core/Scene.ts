@@ -1,5 +1,7 @@
 import { defineComponent, inject, InjectionKey, provide, watch, PropType } from 'vue'
-import { Scene, Color, Object3D, Texture, CubeTextureLoader, sRGBEncoding, TextureLoader } from 'three'
+import { Scene, Color, Object3D, Texture, CubeTextureLoader, sRGBEncoding, EquirectangularReflectionMapping } from 'three'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
+
 import { RendererInjectionKey } from './Renderer'
 
 export const SceneInjectionKey: InjectionKey<Scene> = Symbol('Scene')
@@ -14,7 +16,8 @@ export default defineComponent({
   props: {
     scene: { type: Scene, required: false },
     background: [String, Number, Object],
-    cubeBackground: { type: Object as PropType<CubeBackgroundParams>, required: false }
+    cubeBackground: { type: Object as PropType<CubeBackgroundParams>, required: false },
+    hdrBackground: { type: String, required: false } 
   },
   setup(props) {
     const renderer = inject(RendererInjectionKey)
@@ -47,12 +50,27 @@ export default defineComponent({
         scene.background = textureCube;
     }
 
+    const setHdrBackground = (source: string | undefined): void => {
+        if (!source || source === undefined) return
+        const loader = new RGBELoader()
+        loader.load(source, (texture) => {
+            texture.mapping = EquirectangularReflectionMapping
+            texture.encoding = sRGBEncoding;
+            scene.background = texture
+            scene.environment = texture
+        })
+    } 
+
     setBackground(props.background)
     watch(() => props.background, setBackground)
 
     if (props.cubeBackground) {setCubeBackground(props.cubeBackground)}
     watch(() => props.cubeBackground, setCubeBackground)
-    
+
+    if (props.hdrBackground) {setHdrBackground(props.hdrBackground)}
+    watch(() => props.hdrBackground, setHdrBackground)
+
+
     const add = (o: Object3D): void => { scene.add(o) }
     const remove = (o: Object3D): void => { scene.remove(o) }
 

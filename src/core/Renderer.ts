@@ -224,8 +224,6 @@ export default defineComponent({
 
       if (typeof this.$props.orbitCtrl !== 'boolean' && this.$props.orbitCtrl !== null && this.$props.orbitCtrl !== undefined) {
         
-        console.log('subscribing to orbitControls watcher')
-
         const orbitCtrlsRef = toRef(this.$props, 'orbitCtrl')
 
         watch(orbitCtrlsRef, (value) => { 
