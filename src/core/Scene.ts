@@ -1,14 +1,20 @@
-import { defineComponent, inject, InjectionKey, provide, watch } from 'vue'
-import { Scene, Color, Object3D, Texture } from 'three'
+import { defineComponent, inject, InjectionKey, provide, watch, PropType } from 'vue'
+import { Scene, Color, Object3D, Texture, CubeTextureLoader, sRGBEncoding, TextureLoader } from 'three'
 import { RendererInjectionKey } from './Renderer'
 
 export const SceneInjectionKey: InjectionKey<Scene> = Symbol('Scene')
+
+interface CubeBackgroundParams {
+    path: string,
+    urls: string[]
+}
 
 export default defineComponent({
   name: 'Scene',
   props: {
     scene: { type: Scene, required: false },
     background: [String, Number, Object],
+    cubeBackground: { type: Object as PropType<CubeBackgroundParams>, required: false }
   },
   setup(props) {
     const renderer = inject(RendererInjectionKey)
@@ -32,9 +38,21 @@ export default defineComponent({
       }
     }
 
+    const setCubeBackground = (value: CubeBackgroundParams | undefined): void => {
+        if (!value || value === undefined) return
+        const loader = new CubeTextureLoader();
+        loader.setPath( value.path );
+        const textureCube = loader.load( value.urls );
+        textureCube.encoding = sRGBEncoding;
+        scene.background = textureCube;
+    }
+
     setBackground(props.background)
     watch(() => props.background, setBackground)
 
+    if (props.cubeBackground) {setCubeBackground(props.cubeBackground)}
+    watch(() => props.cubeBackground, setCubeBackground)
+    
     const add = (o: Object3D): void => { scene.add(o) }
     const remove = (o: Object3D): void => { scene.remove(o) }
 
