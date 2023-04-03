@@ -34,6 +34,7 @@ export default defineComponent({
     initAudio(audio: ConcreteAudio) {
       this.audio = audio
       this.initObject3D(this.audio)
+      this.audio?.setVolume(this.volume)
       this.loadAudioAndPlay()
     },
     loadAudioAndPlay() {
