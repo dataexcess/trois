@@ -15,6 +15,7 @@ export default defineComponent({
   props: {
     src:  { type: String, required: false },
     volume: { type: Number, default: 1.0 },
+    loop: { type: Boolean, default: true },
     isStreamed: { type: Boolean, default: true }
   },
   setup (): AudioSetupInterface {
@@ -28,6 +29,9 @@ export default defineComponent({
     src: function(value) {
         this.stop()
         this.loadAudioAndPlay()
+    },
+    loop: function(value) {
+        this.audio?.setLoop(value)
     }
   },
   methods: {
@@ -35,6 +39,7 @@ export default defineComponent({
       this.audio = audio
       this.initObject3D(this.audio)
       this.audio?.setVolume(this.volume)
+      this.audio?.setLoop(this.loop)
       this.loadAudioAndPlay()
     },
     loadAudioAndPlay() {
@@ -52,13 +57,11 @@ export default defineComponent({
         audioLoader.load(this.src!, function( buffer ) {
             console.log('loaded audio from memory')
             instance.audio?.setBuffer( buffer );
-            instance.audio?.setLoop(true)
             instance.play()
         });
     },
     loadAudioFromStream() {
         this.streamedAudio = new Audio(this.src);
-        this.streamedAudio.loop = true;
         this.streamedAudio.preload = 'metadata';
         this.streamedAudio.crossOrigin = 'anonymous';
         const instance = this
