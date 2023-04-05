@@ -32,6 +32,12 @@ export default defineComponent({
     },
     loop: function(value) {
         this.audio?.setLoop(value)
+        if (this.isStreamed) {
+            if (!this.streamedAudio) { return }
+            this.streamedAudio.loop = value
+        } else {
+            this.audio?.setLoop(value)
+        }
     }
   },
   methods: {
@@ -55,8 +61,9 @@ export default defineComponent({
         const audioLoader = new AudioLoader();
         const instance = this
         audioLoader.load(this.src!, function( buffer ) {
-            console.log('loaded audio from memory')
+            //console.log('loaded audio from memory')
             instance.audio?.setBuffer( buffer );
+            instance.audio?.setLoop(instance.loop)
             instance.play()
         });
     },
@@ -64,9 +71,10 @@ export default defineComponent({
         this.streamedAudio = new Audio(this.src);
         this.streamedAudio.preload = 'metadata';
         this.streamedAudio.crossOrigin = 'anonymous';
+        this.streamedAudio.loop = this.loop
         const instance = this
         this.streamedAudio.addEventListener("loadedmetadata", function(_event) {
-            console.log('loaded audio from stream')
+            //console.log('loaded audio from stream')
             instance.play()
         });
         this.audio?.setMediaElementSource(this.streamedAudio)
