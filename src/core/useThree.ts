@@ -128,15 +128,31 @@ export default function useThree(params: ThreeConfigInterface): ThreeInterface {
     initPointer()
 
     if (config.orbitCtrl) {
-      const cameraCtrl = new OrbitControls(obj.camera, obj.renderer.domElement)
-      if (config.orbitCtrl instanceof Object) {
-        Object.entries(config.orbitCtrl).forEach(([key, value]) => {
-          // @ts-ignore
-          cameraCtrl[key] = value
-        })
-      }
-      onBeforeRender(() => { cameraCtrl.update() })
-      obj.cameraCtrl = cameraCtrl
+        if (config.orbitCtrl instanceof Object) {
+            if (config.orbitCtrl.enabled) {
+                const cameraCtrl = new OrbitControls(obj.camera, obj.renderer.domElement)
+
+                Object.entries(config.orbitCtrl).forEach(([key, value]) => {
+                    // @ts-ignore
+                    cameraCtrl[key] = value
+                })
+
+                onBeforeRender(() => { cameraCtrl.update() })
+                obj.cameraCtrl = cameraCtrl
+            } 
+            else 
+            {
+                if (obj.cameraCtrl) { obj.cameraCtrl.enabled = false }
+                obj.cameraCtrl?.dispose()
+                obj.cameraCtrl = undefined
+            }
+        }
+    }
+    else 
+    {
+        if (obj.cameraCtrl) { obj.cameraCtrl.enabled = false }
+        obj.cameraCtrl?.dispose()
+        obj.cameraCtrl = undefined
     }
 
     return true
