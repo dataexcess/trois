@@ -27,5 +27,6 @@ export { default as Points } from './Points'
 export { default as Lines } from './Lines'
 
 export { default as Capsule } from './Capsule'
+export { default as GridHelper } from './GridHelper'
 
 export type { MeshPublicInterface } from './Mesh'

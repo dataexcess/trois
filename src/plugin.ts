@@ -59,6 +59,8 @@ export const TroisJSVuePlugin = {
       'Tube', 'TubeGeometry',
       'Capsule', 'CapsuleGeometry',
 
+      'GridHelper',
+
       'Image',
       'InstancedMesh',
       'Points',
