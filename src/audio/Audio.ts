@@ -15,6 +15,7 @@ export default defineComponent({
   props: {
     src:  { type: String, required: false },
     volume: { type: Number, default: 1.0 },
+    detune: { type: Number, default: 0.0 },
     loop: { type: Boolean, default: true },
     isStreamed: { type: Boolean, default: true }
   },
@@ -25,6 +26,15 @@ export default defineComponent({
   watch: {
     volume: function(value) {
         this.audio?.setVolume(value)
+    },
+    detune: function(value) {
+        if (this.isStreamed) {
+            if (!this.streamedAudio) { return }
+            const playbackRateRatio = Math.pow(2, value / 1200);
+            this.streamedAudio.playbackRate = playbackRateRatio
+        } else {
+            this.audio?.setDetune(value)
+        }
     },
     src: function(value) {
         this.stop()
@@ -37,6 +47,11 @@ export default defineComponent({
             this.streamedAudio.loop = value
         } else {
             this.audio?.setLoop(value)
+        }
+    },
+    isStreamed: function(value) {
+        if (this.audio) {
+            this.initAudio(this.audio)
         }
     }
   },
@@ -61,10 +76,10 @@ export default defineComponent({
         const audioLoader = new AudioLoader();
         const instance = this
         audioLoader.load(this.src!, function( buffer ) {
-            //console.log('loaded audio from memory')
             instance.audio?.setBuffer( buffer );
             instance.audio?.setLoop(instance.loop)
             instance.play()
+            instance.audio?.setDetune(instance.detune)
         });
     },
     loadAudioFromStream() {
@@ -74,8 +89,12 @@ export default defineComponent({
         this.streamedAudio.loop = this.loop
         const instance = this
         this.streamedAudio.addEventListener("loadedmetadata", function(_event) {
-            //console.log('loaded audio from stream')
             instance.play()
+            if (instance.streamedAudio) {
+                const playbackRateRatio = Math.pow(2, instance.detune / 1200);
+                instance.streamedAudio.preservesPitch = false
+                instance.streamedAudio.playbackRate = playbackRateRatio
+            }
         });
         this.audio?.setMediaElementSource(this.streamedAudio)
     },

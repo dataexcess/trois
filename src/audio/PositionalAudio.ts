@@ -7,9 +7,30 @@ export default defineComponent({
   extends: Audio,
   name: 'PositionalAudio',
   props: {
-    refDistance: { type: Number, default: 1.0 },
-    maxDistance: { type: Number, default: 1.0 },
-    rolloffFactor: { type: Number, default: 1.0 },
+    refDistance: { 
+        type: Number, 
+        default: 1.0,     
+        validator: function (value: unknown) {
+            const typedValue = value as number
+            return typeof typedValue === 'number' && typedValue >= 0
+        }
+    },
+    maxDistance: { 
+        type: Number, 
+        default: 1.0,
+        validator: function (value: unknown) {
+            const typedValue = value as number
+            return typeof typedValue === 'number' && typedValue >= 0
+        }
+     },
+    rolloffFactor: { 
+        type: Number, 
+        default: 1.0,
+        validator: function (value: unknown) {
+            const typedValue = value as number
+            return typeof typedValue === 'number' && typedValue >= 0.0 && typedValue <= 1.0
+        }
+    },
     distanceModel: { type: String, default: 'inverse' },
   },
   created() {
@@ -31,7 +52,6 @@ export default defineComponent({
   methods: {
     bindProps() {
       ['refDistance', 'maxDistance', 'rolloffFactor', 'distanceModel'].forEach(p => {
-        console.log('initialised positionalAudio props')
         bindProp(this.$props, p, (this.audio as PositionalAudio).panner)
       })
     },
